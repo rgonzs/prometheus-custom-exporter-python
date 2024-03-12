@@ -3,8 +3,29 @@ services:
     build:
       context: '.'
       dockerfile: Dockerfile
+    volumes:
+    - ./config:/config
+    - ./mock_files:/mock_files
     ports:
       - 9000:9000
+  exporter2:
+    build:
+      context: '.'
+      dockerfile: Dockerfile
+    volumes:
+    - ./mock_files_2:/mock_files:r
+    - ./config_2:/config:r
+    ports:
+      - 9001:9000
+  exporter3:
+    build:
+      context: '.'
+      dockerfile: Dockerfile
+    volumes:
+    - ./mock_files_2:/mock_files:r
+    - ./config_2:/config:r
+    ports:
+      - 9002:9000
   prometheus:
     image: prom/prometheus:latest
     command:
@@ -13,6 +34,14 @@ services:
       - 9090:9090
     volumes:
       - ./prometheus:/etc/prometheus
+  alertmanager:
+    image: prom/alertmanager
+    ports: 
+    - 9093:9093
+    volumes:
+    - "./alertmanager:/config"
+    command:
+    - '--config.file=/config/alertmanager.yaml'
   grafana:
     image: grafana/grafana:latest
     environment:

@@ -1,0 +1,18 @@
+groups:
+- name: Check Hash Files
+  rules:
+    - alert: FileNotExists
+      expr: file_exists == 0
+      for: 15s
+      labels:
+        severity: critical
+      annotations:
+        summary: "File {{ $labels.filename }} not exists"
+        description: "File {{ $labels.filename }} not exists"
+    - alert: Sha1SumNotMatch
+      expr: sha1sum_match == 0
+      labels:
+        severity: critical
+      annotations:
+        summary: "El archivo {{ $labels.filename }} no concuerda con el original en el servidor {{ $labels.hostname }}"
+        description: "Estos archivos son importantes para las cajas de este cliente, revisar porque no son identicos a los del origen."

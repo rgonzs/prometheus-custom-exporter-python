@@ -1,0 +1,9 @@
+# role: master | slave
+role: slave
+scan_paths:
+# - /Users/rgonzs/projects/prometheus-custom-exporter-python/mock_files_2
+- /mock_files
+# Only required if this server is a slave.
+prometheus: 
+  url: http://prometheus:9090
+  disable_ssl: true
